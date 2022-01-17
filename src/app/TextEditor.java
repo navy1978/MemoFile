@@ -2,6 +2,7 @@ package app;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -19,12 +20,14 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
@@ -49,6 +52,7 @@ public class TextEditor /*implements ActionListener*/ {
   JPanel panelSearch = new JPanel();
   JLabel occurencesLabel = new JLabel();
   MyJButton find = new MyJButton("Find/Next");
+  TitledBorder titledBorder = null;
   private int pos = 0;
   /* private Color backgroundColor1 = Color.DARK_GRAY;
     private Color backgroundColor2 = Color.DARK_GRAY;
@@ -99,7 +103,7 @@ public class TextEditor /*implements ActionListener*/ {
     occurencesLabel.setForeground(Util.FOREGROUND_COLOR);
     occurencesLabel.setBackground(Util.BACKGROUD_COLOR);
     // occurencesLabel.setPreferredSize(new Dimension(20, 40)); // Width, Height
-    
+
     panelSearch.add(text);
     panelSearch.add(occurencesLabel);
     panelSearch.add(find);
@@ -295,7 +299,7 @@ public class TextEditor /*implements ActionListener*/ {
 
   public void update(String file) {
     sertOccurences(0);
-    TitledBorder titledBorder = BorderFactory.createTitledBorder(file);
+    titledBorder = BorderFactory.createTitledBorder(file);
     titledBorder.setTitleColor(Util.getContrastColor(Util.BACKGROUD_COLOR));
     textArea.setBorder(titledBorder);
     pos = 0;
@@ -306,6 +310,8 @@ public class TextEditor /*implements ActionListener*/ {
     jscrollPane.revalidate();
     jscrollPane.repaint();
     addUndo();
+    JFrame f1 = (JFrame) SwingUtilities.windowForComponent(jscrollPane);
+    f1.setTitle(file);
   }
 
   private void readFile(String file) {
@@ -355,5 +361,10 @@ public class TextEditor /*implements ActionListener*/ {
     find.applyTheme();
     container.revalidate();
     container.repaint();
+  }
+
+  public void changeFontTitleBorder(int fontSize) {
+    Font f = textArea.getFont();
+    titledBorder.setTitleFont(new Font(f.getName(), f.getStyle(), /*f.getSize() +*/ fontSize));
   }
 }

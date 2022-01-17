@@ -88,6 +88,16 @@ class Main extends JFrame {
     component.setFont(new Font(f.getName(), f.getStyle(), /*f.getSize() +*/ fontSize));
     if (component instanceof Container) {
       for (Component child : ((Container) component).getComponents()) {
+        /* if (child instanceof JPanel) {
+          JPanel jPanel1 = (JPanel) child;
+          Border gen_border = jPanel1.getBorder();
+          if (gen_border instanceof javax.swing.border.TitledBorder) {
+            javax.swing.border.TitledBorder border = (javax.swing.border.TitledBorder) gen_border;
+            if (border != null) {
+              border.setTitleFont(new Font(f.getName(), f.getStyle(), fontSize));
+            }
+          }
+        }*/
         changeFont(child, fontSize);
       }
     }
@@ -97,18 +107,27 @@ class Main extends JFrame {
 
     var menu = new JMenu("Menu");
 
-    var newMenuItem = new JMenu("Theme");
+    var themeMenuItem = new JMenu("Theme");
 
     ButtonGroup group = new ButtonGroup();
-    createThemeSubMenu(newMenuItem, group, Util.ORANGE_WHITE, true);
-    createThemeSubMenu(newMenuItem, group, Util.BLACK_WHITE, false);
-    createThemeSubMenu(newMenuItem, group, Util.DARKGRAY_SOFTWHITE, false);
-    createThemeSubMenu(newMenuItem, group, Util.GRAY_YELLOW, false);
-    createThemeSubMenu(newMenuItem, group, Util.BLUE_MINT, false);
-    createThemeSubMenu(newMenuItem, group, Util.GREEN_GREENN, false);
-    createThemeSubMenu(newMenuItem, group, Util.BLUE_WHITE, false);
+    createThemeSubMenu(themeMenuItem, group, Util.ORANGE_WHITE, true);
+    createThemeSubMenu(themeMenuItem, group, Util.BLACK_WHITE, false);
+    createThemeSubMenu(themeMenuItem, group, Util.DARKGRAY_SOFTWHITE, false);
+    createThemeSubMenu(themeMenuItem, group, Util.GRAY_YELLOW, false);
+    createThemeSubMenu(themeMenuItem, group, Util.BLUE_MINT, false);
+    createThemeSubMenu(themeMenuItem, group, Util.GREEN_GREENN, false);
+    createThemeSubMenu(themeMenuItem, group, Util.BLUE_WHITE, false);
 
-    menu.add(newMenuItem);
+    menu.add(themeMenuItem);
+
+    var fontMenuItem = new JMenu("Font");
+
+    ButtonGroup group2 = new ButtonGroup();
+    createFontSubMenu(fontMenuItem, group2, Util.FONT_12, true);
+    createFontSubMenu(fontMenuItem, group2, Util.FONT_14, true);
+    createFontSubMenu(fontMenuItem, group2, Util.FONT_16, true);
+
+    menu.add(fontMenuItem);
 
     menuBar.setOpaque(false);
     menuBar.setBackground(Util.BACKGROUD_COLOR);
@@ -143,6 +162,21 @@ class Main extends JFrame {
 
           lelftPanel.applyTheme();
           textEditor.applyTheme();
+          frame.revalidate();
+          frame.repaint();
+        });
+  }
+
+  private void createFontSubMenu(JMenu menu, ButtonGroup group, int fontSize, boolean selected) {
+    JRadioButtonMenuItem radioMenuItem = new JRadioButtonMenuItem("" + fontSize, selected);
+    // radioMenuItem.setMnemonic(KeyEvent.VK_I);
+    menu.add(radioMenuItem);
+    group.add(radioMenuItem);
+
+    radioMenuItem.addActionListener(
+        (event) -> {
+          textEditor.changeFontTitleBorder(fontSize);
+          Main.changeFont(frame, fontSize);
           frame.revalidate();
           frame.repaint();
         });

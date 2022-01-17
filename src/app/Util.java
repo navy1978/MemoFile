@@ -27,6 +27,10 @@ public class Util {
   public static final String GREEN_GREENN = "Green On Green";
   public static final String BLUE_WHITE = "Blue & White";
 
+  public static final int FONT_12 = 12;
+  public static final int FONT_14 = 14;
+  public static final int FONT_16 = 16;
+
   public static JScrollPane createJScrollPaneBoth(JPanel jpanel, Dimension dimension) {
     return createJScrollPane(
         jpanel,
